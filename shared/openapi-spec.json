@@ -1,0 +1,325 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Bookmark Management API",
+    "description": "REST API for managing bookmarks",
+    "contact": {
+      "name": "Bookmark API Support",
+      "email": "support@example.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Bookmarks",
+      "description": "Bookmark management API"
+    }
+  ],
+  "paths": {
+    "/api/bookmarks/{id}": {
+      "get": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Get bookmark by ID",
+        "description": "Retrieve a specific bookmark by its ID",
+        "operationId": "getBookmarkById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the bookmark to retrieve",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bookmark found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bookmark not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Update a bookmark",
+        "description": "Update an existing bookmark by its ID",
+        "operationId": "updateBookmark",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the bookmark to update",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookmarkRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Bookmark updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bookmark not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Delete a bookmark",
+        "description": "Delete a bookmark by its ID",
+        "operationId": "deleteBookmark",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the bookmark to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Bookmark deleted successfully"
+          },
+          "404": {
+            "description": "Bookmark not found"
+          }
+        }
+      }
+    },
+    "/api/bookmarks": {
+      "get": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Get all bookmarks",
+        "description": "Retrieve a list of all bookmarks",
+        "operationId": "getAllBookmarks",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of bookmarks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Create a new bookmark",
+        "description": "Create a new bookmark with the provided details",
+        "operationId": "createBookmark",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookmarkRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Bookmark created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookmarks/search": {
+      "get": {
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Search bookmarks",
+        "description": "Search bookmarks by title (case-insensitive)",
+        "operationId": "searchBookmarks",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search query string",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "spring"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved matching bookmarks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookmarkResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BookmarkRequestDTO": {
+        "required": [
+          "title",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the bookmark",
+            "example": "Spring Boot Documentation"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the bookmark",
+            "example": "https://spring.io/projects/spring-boot"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the bookmark",
+            "example": "Official Spring Boot documentation"
+          }
+        },
+        "description": "Bookmark details to create"
+      },
+      "BookmarkResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the bookmark",
+            "format": "int64",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the bookmark",
+            "example": "Spring Boot Documentation"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the bookmark",
+            "example": "https://spring.io/projects/spring-boot"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the bookmark",
+            "example": "Official Spring Boot documentation"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the bookmark was created",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Timestamp when the bookmark was last updated",
+            "format": "date-time"
+          }
+        },
+        "description": "Response DTO for bookmark data"
+      }
+    }
+  }
+}
