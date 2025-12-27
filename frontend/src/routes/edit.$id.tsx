@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { bookmarkApi } from "../services/api";
-import { Bookmark } from "../types/bookmark";
+import type { Bookmark } from "@shared/types";
 
 export const Route = createFileRoute("/edit/$id")({
   component: EditBookmark,
@@ -29,8 +29,8 @@ function EditBookmark() {
       const data = await bookmarkApi.getById(Number(id));
       setBookmark(data);
       setFormData({
-        title: data.title,
-        url: data.url,
+        title: data.title || "",
+        url: data.url || "",
         description: data.description || "",
       });
     } catch (error) {

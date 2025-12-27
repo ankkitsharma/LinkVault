@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { bookmarkApi } from "../services/api";
-import { Bookmark } from "../types/bookmark";
+import type { Bookmark } from "@shared/types";
 
 export const Route = createFileRoute("/")({
   component: Index,
