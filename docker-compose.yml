@@ -2,16 +2,18 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: bookmark-postgres
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: bookmarkdb
-      POSTGRES_USER: bookmarkuser
-      POSTGRES_PASSWORD: bookmarkpass
+      POSTGRES_DB: ${POSTGRES_DB:-bookmarkdb}
+      POSTGRES_USER: ${POSTGRES_USER:-bookmarkuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bookmarkpass}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U bookmarkuser"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bookmarkuser}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -21,10 +23,17 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: bookmark-backend
+    env_file:
+      - .env
+      - ./backend/.env
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
+      SERVER_PORT: ${BACKEND_PORT:-8080}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:postgresql://postgres:5432/${POSTGRES_DB:-bookmarkdb}}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-${POSTGRES_USER:-bookmarkuser}}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-${POSTGRES_PASSWORD:-bookmarkpass}}
     ports:
-      - "8080:8080"
+      - "${BACKEND_PORT:-8080}:8080"
     depends_on:
       postgres:
         condition: service_healthy
@@ -35,8 +44,13 @@ services:
       context: .
       dockerfile: ./frontend/Dockerfile
     container_name: bookmark-frontend
+    env_file:
+      - .env
+      - ./frontend/.env
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8080/api}
     ports:
-      - "3000:80"
+      - "${FRONTEND_PORT:-3000}:80"
     depends_on:
       - backend
     restart: unless-stopped

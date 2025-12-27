@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: bookmarks.local
+    - host: bookmarks.local # Update this value in ConfigMap: INGRESS_HOST
       http:
         paths:
           - path: /

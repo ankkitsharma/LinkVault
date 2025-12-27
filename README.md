@@ -84,31 +84,37 @@ docker-compose up --build
 
 ### Kubernetes Deployment
 
-1. **Apply secrets:**
+1. **Apply ConfigMap:**
+
+   ```bash
+   kubectl apply -f k8s/configmap.yaml
+   ```
+
+2. **Apply secrets:**
 
    ```bash
    kubectl apply -f k8s/postgres-secret.yaml
    ```
 
-2. **Deploy PostgreSQL:**
+3. **Deploy PostgreSQL:**
 
    ```bash
    kubectl apply -f k8s/postgres-deployment.yaml
    ```
 
-3. **Deploy Backend:**
+4. **Deploy Backend:**
 
    ```bash
    kubectl apply -f k8s/backend-deployment.yaml
    ```
 
-4. **Deploy Frontend:**
+5. **Deploy Frontend:**
 
    ```bash
    kubectl apply -f k8s/frontend-deployment.yaml
    ```
 
-5. **Deploy Ingress (optional):**
+6. **Deploy Ingress (optional):**
    ```bash
    kubectl apply -f k8s/ingress.yaml
    ```
