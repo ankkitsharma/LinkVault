@@ -151,6 +151,12 @@ You can also specify a custom backend URL:
 BACKEND_URL=http://your-backend-url:8080 npm run generate:types
 ```
 
+**Note:** The `shared` folder is set up as a package (`@bookmark/shared`) and is linked as a dependency in the frontend. After generating types, you may need to reinstall dependencies:
+
+```bash
+npm install
+```
+
 ## Features
 
 - ✅ Create, read, update, and delete bookmarks
@@ -177,7 +183,7 @@ mvn spring-boot:run
 
 ```bash
 cd frontend
-npm install
+npm install  # This will also link the @bookmark/shared package
 npm run dev
 ```
 

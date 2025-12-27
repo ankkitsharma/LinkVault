@@ -1,4 +1,4 @@
-import type { Bookmark, BookmarkRequest } from "@shared/types";
+import type { Bookmark, BookmarkRequest } from "@bookmark/shared";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 

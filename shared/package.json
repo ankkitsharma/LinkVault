@@ -1,0 +1,31 @@
+{
+  "name": "@bookmark/shared",
+  "version": "1.0.0",
+  "description": "Shared types and utilities for bookmark application",
+  "type": "module",
+  "main": "./types.ts",
+  "types": "./types.ts",
+  "exports": {
+    ".": {
+      "types": "./types.ts",
+      "import": "./types.ts"
+    },
+    "./api-types": {
+      "types": "./api-types.ts",
+      "import": "./api-types.ts"
+    }
+  },
+  "files": [
+    "types.ts",
+    "api-types.ts"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "types",
+    "openapi",
+    "shared"
+  ],
+  "license": "MIT"
+}

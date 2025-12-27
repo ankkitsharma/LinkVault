@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { bookmarkApi } from "../services/api";
-import type { Bookmark } from "@shared/types";
+import type { Bookmark } from "@bookmark/shared";
 
 export const Route = createFileRoute("/edit/$id")({
   component: EditBookmark,
