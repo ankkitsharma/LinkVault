@@ -70,37 +70,52 @@ You can use local images directly, or push to a registry like Docker Hub.
 
 ## Deployment Steps
 
-1. **Apply secrets:**
+1. **Create secrets:**
 
    ```bash
-   kubectl apply -f k8s/postgres-secret.yaml
+   kubectl create secret generic app-secret --from-env-file=k8s/app.env
    ```
 
-2. **Deploy PostgreSQL:**
+   Note: Make sure your `k8s/app.env` file contains all the required secret variables:
+
+   - `POSTGRES_DB`
+   - `POSTGRES_USER`
+   - `POSTGRES_PASSWORD`
+   - `SPRING_DATASOURCE_URL`
+   - `SPRING_DATASOURCE_USERNAME`
+   - `SPRING_DATASOURCE_PASSWORD`
+
+2. **Apply ConfigMap:**
+
+   ```bash
+   kubectl apply -f k8s/configmap.yaml
+   ```
+
+3. **Deploy PostgreSQL:**
 
    ```bash
    kubectl apply -f k8s/postgres-deployment.yaml
    ```
 
-3. **Wait for PostgreSQL to be ready:**
+4. **Wait for PostgreSQL to be ready:**
 
    ```bash
    kubectl wait --for=condition=ready pod -l app=postgres --timeout=300s
    ```
 
-4. **Deploy Backend:**
+5. **Deploy Backend:**
 
    ```bash
    kubectl apply -f k8s/backend-deployment.yaml
    ```
 
-5. **Deploy Frontend:**
+6. **Deploy Frontend:**
 
    ```bash
    kubectl apply -f k8s/frontend-deployment.yaml
    ```
 
-6. **Deploy Ingress (optional):**
+7. **Deploy Ingress (optional):**
    ```bash
    kubectl apply -f k8s/ingress.yaml
    ```
@@ -145,11 +160,12 @@ If you have an ingress controller installed (like nginx-ingress), you can access
 
 ## Troubleshooting
 
-### If validation errors occur:
+### If secret creation fails:
 
 ```bash
-# Skip validation (not recommended, but useful for testing)
-kubectl apply -f k8s/postgres-secret.yaml --validate=false
+# Delete existing secret if it exists and recreate
+kubectl delete secret app-secret
+kubectl create secret generic app-secret --from-env-file=k8s/app.env
 ```
 
 ### Check pod status:

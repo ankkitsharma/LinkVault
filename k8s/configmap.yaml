@@ -5,22 +5,20 @@ metadata:
   labels:
     app: bookmark
 data:
-  # Database Configuration
-  POSTGRES_DB: "bookmarkdb"
+  # Database Configuration (non-sensitive)
   POSTGRES_HOST: "postgres"
   POSTGRES_PORT: "5432"
-  
+
   # Backend Configuration
   SPRING_PROFILES_ACTIVE: "docker"
   SERVER_PORT: "8080"
-  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/bookmarkdb"
-  
+
   # Frontend Configuration
   VITE_API_URL: "http://bookmarks.local/api"
-  
+
   # Ingress Configuration
   INGRESS_HOST: "bookmarks.local"
-  
+
   # Resource Configuration
   BACKEND_REPLICAS: "2"
   FRONTEND_REPLICAS: "2"
